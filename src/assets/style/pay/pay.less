@@ -1,0 +1,70 @@
+.pay{
+    .main-panel{
+        #addRemarks{
+            float:left;
+            display:block;
+            width:40%;
+        }
+        .pay-coupon{
+            float:right;
+            width:60%;
+            font-size:14px;
+            text-align:right;
+            color:#f00;
+        }
+        .remarks{
+            float:left;
+        }
+        #updateRemarks{
+            display:block;
+            float:left;
+        }
+    }
+    #coupon-wrapper{
+        display:none;
+        position:fixed;
+        left:0;
+        top:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,.2);
+        transition:all .3s;
+        z-index:1000;
+        &.active{
+            display:block;
+        }
+        .coupons{ 
+            position: absolute;
+            width: 70%;
+            max-width: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+            border:1px solid #797979;
+            font-size:16px;
+            background:#fff;
+            .title{
+                padding-top:.5em;
+                padding-bottom:.5em;
+                width:100%;
+            }
+            .coupons-content{
+                padding-bottom:.5rem;
+                &.weui-cells{
+                    margin-top:0;
+                    .weui-cell{
+                        &.disabled{
+                           color:#999;
+                        }
+                       .weui-cell__bd{
+                            text-align:left;
+                        } 
+                    }
+                }
+            }
+        }
+        
+    }
+}
+

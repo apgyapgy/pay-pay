@@ -1,0 +1,45 @@
+.border-bottom{
+    border-bottom:1px solid #797979;   
+}
+.weui-media-box_appmsg{
+    .weui-media-box__thumb{
+        height:100%;
+        border-radius:50%;
+    }
+} 
+.coupons-list{
+    .weui-media-box{
+        padding-top:5px;
+        padding-bottom:5px;
+        &.border-bottom{
+            border-bottom:1px solid #797979;
+            &:last-of-type{
+                border-bottom:0;
+            }
+        }
+        &.unavailable{
+            color:#999;
+        }
+        .weui-media-box__title{
+            position:relative;
+            .coupon-state{
+                position:absolute;
+                right:0;
+                bottom:0;
+                font-size:14px;
+            }
+        }
+        .weui-media-box__desc{
+            padding-top:2px;
+            padding-bottom:2px;
+        }
+    }
+}
+
+.weui-loadmore_line{
+    .weui-loadmore__tips{
+        background:#eee;
+    }
+}
+
+

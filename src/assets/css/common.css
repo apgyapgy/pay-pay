@@ -1,0 +1,428 @@
+html,body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4,h5, h6, i, b, textarea, button, input, select, figure, figcaption {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-style: normal;
+  text-decoration: none;
+  border: none;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-font-smoothing: antialiased;
+}
+html {
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-text-size-adjust:none;
+}
+body, html {
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+  background: #eeeeee;
+  color: #000000;
+}
+a:focus,input:focus{
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+button,input,textarea {
+  -webkit-appearance:none;
+  font-size:inherit;
+}
+*:focus {outline: none;resize:none;}
+input[type=button],input[type=text],input[type=submit],input[type=reset] {
+  -webkit-appearance:none;
+  outline:none;
+  border-radius:0;
+  -webkit-border-radius:0;
+  -moz-border-radius:0;
+  -o-border-radius:0;
+}
+input:required,input:invalid {
+  border:0 none;
+  outline:0 none;
+  -webkit-box-shadow:none;
+  -moz-box-shadow:none;
+  -ms-box-shadow:none;
+  -o-box-shadow:none;
+  box-shadow:none;
+}
+.clear{
+	zoom:1;
+}
+.clear:after{
+	content:"";
+	clear:both;
+	display:block;
+	height:0;
+	overflow:hidden;
+	visibility:hidden;
+}
+
+/*登录*/
+.login-panel{
+  margin: 20px;
+}
+.login-panel .photo{
+  margin: 40px 0 30px 0;
+  text-align: center;
+}
+.login-panel .photo img{
+  width: 100px;
+  border-radius: 100%;
+}
+.login-span{
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid #d6d6d6;
+  background: #ffffff;
+  position: relative;
+}
+.login-input{
+  width: 80%;
+  height: 40px;
+  line-height: 40px;
+  margin-left: 5px;
+  position: absolute;
+  top:5px;
+}
+.login-btn{
+  margin-top: 30px;
+  text-align: center;
+}
+.forgetPwd{
+  line-height: 30px;
+  color: #10aeff;
+}
+/*找回密码*/
+.pwd_link{
+  width: 100%;
+  float: left;
+}
+.pwd-panel{
+  margin: 20px;
+}
+.pwd-panel .photo{
+  margin: 40px 0 30px 0;
+  text-align: center;
+}
+.pwd-span{
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid #d6d6d6;
+  background: #ffffff;
+}
+.mobile-input{
+  width: 50%;
+  height: 30px;
+  line-height: 30px;
+}
+.pwd-input{
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+}
+.login-btn{
+  margin-top: 30px;
+  text-align: center;
+}
+.pwd-yzm{
+  margin-top: 8px;
+}
+/*交易记录*/
+.order .weui-cell::before{
+  left: 0;
+}
+.order .trade-time{
+  width: 110px;
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  border:1px solid #d6d6d6;
+  background: #fff;
+  text-align: center;
+}
+.order .weui-form-preview__ft{
+  line-height: 30px;
+}
+.order .payIcon{
+  width: 36px;
+}
+.order .weui-cell[name='list']{
+  padding: 15px;
+}
+.order .date{
+  margin-left: 80px; margin-top: 5px
+}
+
+/*付款成功*/
+.weui-cells[name='payCell']{
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.weui-cell[name='payCell']{
+  margin: 10px 0;
+}
+
+/*资金划账记录*/
+.record-pannel{
+  border-radius: 5px;
+  padding-top: 10px;
+}
+.record-date{
+  margin: 15px;
+}
+.record-date:last-child{
+  margin: 0;
+}
+.record-time{
+  height: 36px;
+  line-height: 40px;
+  width: 150px;
+  border: 1px solid #d6d6d6;
+  background: #FFFFFF;
+  border-radius: 5px;
+  text-align: center;
+}
+.weui-cells[name='payRecord']{
+  margin: 10px;
+  border-radius: 5px
+}
+
+
+.main-title {
+  text-align: center;
+  font-size: 34px;
+  color: #3cc51f;
+  font-weight: 400;
+  margin: 0 15%;
+}
+
+.main-sub-title {
+  text-align: center;
+  color: #333;
+  font-size: 14px;
+  font-weight: bold;
+}
+.mchLogo{
+  border-radius: 100%;
+  width: 80px;
+  height: 80px;
+  padding: 5px;
+  background: #FFFFFF;
+}
+.main-header {
+  padding: 20px 0;
+}
+
+.main-panel{
+  margin: 0 20px;
+}
+.main-con{
+  padding: 0 5px;
+  border: 1px solid #999;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 4px;
+  background: #FFFFFF;
+  font-size: 22px;
+}
+.main-input{
+  width: 70%;
+  height: 58px;
+  line-height: 58px;
+  float: right;
+  text-align: right;
+}
+.main-tip{
+  font-size: 14px;
+  color: #007aff;
+}
+.remarks{
+  font-size: 14px;
+  color: #999999;
+  margin-right: 4px;
+}
+#updateRemarks{
+  display: none;
+}
+.weui-prompt-input{
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
+}
+.weui-footer{
+  margin-top: 30px;
+}
+
+.main-footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  text-align: center
+}
+.main-footer p{
+  font-size: 14px;
+  color: #666;
+  line-height: 30px;
+  text-align: center;
+}
+.main-table a{
+  display: block;
+  color: #000000;
+  font-size: 24px;
+}
+.main-table tr,.main-table td{
+  border: 1px solid #999;
+  height: 60px;
+  line-height: 60px;
+  background: #FFFFFF;
+  font-weight: bold;
+}
+.main-table .border-left0{
+  border-left: 0;
+}
+.main-table .border-right0{
+  border-right: 0;
+}
+.main-table .border-bottom0{
+  border-bottom: 0;
+}
+.main-table td.pay{
+  background: #3cc51f;
+  color: #FFFFFF;
+}
+.main-table a.white{
+  color: #FFFFFF;
+}
+
+footer a {
+  color: #999;
+  text-decoration: none;
+}
+/*二维码无效*/
+.qrCode,.qrCode-panel{
+  padding: 0 20px;
+  line-height: 40px;
+  font-size: 14px;
+}
+.qrCode-panel{
+  background: #FFFFFF;
+  border:1px solid #ddd;
+  border-left:0;
+  border-right:0;
+}
+/*颜色*/
+.bgfff{
+  background: #fff;
+}
+.bgeee{
+  background: #eee;
+}
+.white{
+  color: #ffffff;
+}
+.gray{
+  color: #999999;
+}
+.black{
+  color: #333333;
+}
+.blue{
+  color: #0fa8ff;
+}
+.green{
+  color: #3cc51f;
+}
+.red{
+  color: #f43530;
+}
+.wf{
+  width: 100%;
+  float: left;
+}
+/*字号*/
+.font12{
+  font-size: 12px;
+}
+.font14{
+  font-size: 14px;
+}
+.font16{
+  font-size: 16px;
+}
+.font18{
+  font-size: 18px;
+}
+.font25{
+  font-size: 25px;
+}
+/*通用*/
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
+.block{
+  display: block;
+}
+.inline-block{
+  display: inline-block;
+}
+.line60{
+  line-height: 60px;
+}
+.line50{
+  line-height: 50px;
+}
+.line40{
+  line-height: 40px;
+}
+.line36{
+  line-height: 36px;
+}
+.line30{
+  line-height: 30px;
+}
+.line24{
+  line-height: 24px;
+}
+.payIcon{
+  width: 36px;
+}
+.margin0{
+  margin: 0;
+}
+.left0{
+  left: 0;
+}
+.border-bottom1{
+  border-bottom: 1px solid #eee;
+}
+.border-right1{
+  border-right: 1px solid #eee;
+}
+.border-top1{
+  border-top: 1px solid #eee;
+}
+.hide{
+  display: none;
+}
+.txtLeft{
+  text-align: left;
+}
+.txtRight{
+  text-align: right;
+}
+.txtCenter{
+  text-align: center;
+}

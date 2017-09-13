@@ -45,3 +45,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+#¹ıÂËÎÄ¼ş
+.svn/
+*.svn-base
+node_modules/
