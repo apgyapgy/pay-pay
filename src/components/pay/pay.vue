@@ -81,6 +81,13 @@
 			return{
 				showCouponFlag:false,
 				couponsList:[
+					/*{
+						couponAmt:4,
+						couponAmtMin:0,
+						couponNo:111,
+						id:1,
+						couponNm:'hh'
+					}*/
 				],
 				couponPrice:0,//优惠价，默认为0,
 				remarkText:'',//备注信息
@@ -174,17 +181,17 @@
 		  		if(this.payPrice*100/100>0 && this.payAble){
 		  			this.payAble = false;
 		  			var _this = this;
+		  			var _payPrice = parseInt(this.payPrice*10000/100)
 		  			var _params = {
 		  				qrId: this.qrId,
                         openId:this.openId,
                         payMode:this.payMode,
                         src: this.src,
-                        orderAmt:this.payPrice*100-this.couponPrice,//订单实际金额
-                        orderAmtOrg:this.payPrice*100,//订单原始金额
+                        orderAmt:_payPrice-this.couponPrice,//订单实际金额
+                        orderAmtOrg:_payPrice,//订单原始金额
                         couponAmt:this.couponPrice,//优惠券金额
                         couponNo:this.selectedCouponItemId?this.selectedCouponItemId+'':''//优惠券编号
 		  			};
-		  			console.log("order param:",_params);
 		  			this.$http.jsonp(httpUrl.pay_order, 
 				    	{params: _params}
 				    ).then((response) => {
