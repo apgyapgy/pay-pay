@@ -17,7 +17,7 @@
 		        <input type="text" id="text1" style="display:none">
 		    </div>
 		    <a id="addRemarks" v-show="remarkText.length==0" @click="addRemark" class="main-tip">添加备注</a>
-		    <span class="pay-coupon" @click="showCoupon">-￥{{couponPrice/100}}(可用优惠券{{couponsList.length}}张)</span>
+		    <span v-show="this.couponPrice" class="pay-coupon" @click="showCoupon">-￥{{couponPrice/100}}(可用优惠券{{couponsList.length}}张)&gt;</span>
 		    <label v-show="remarkText.length>0" class="remarks">{{remarkText.length>6?remarkText.substring(0,6)+'...':remarkText}}</label>
 		    <a v-show="remarkText.length>0" id="updateRemarks" @click="addRemark" class="main-tip">修改</a>
 		</div>
@@ -52,7 +52,7 @@
 			<div class="coupons">
 				<div class="title">可用优惠券</div>
 				<div class="weui-cells weui-cells_checkbox coupons-content clear">
-				  	<label v-for="(item,index,key) in couponsList" @click.self="changeCoupon(item.couponAmt,item.couponAmtMin,item.couponNo)" class="weui-cell weui-check__label" :for="joinId(item.id)" :class='{disabled:!(payPrice*100>=item.couponAmt&&payPrice*100>=item.couponAmtMin)}'>
+				  	<label v-for="(item,index,key) in couponsList" @click.self="changeCoupon(item.couponAmt,item.couponAmtMin,item.couponNo)" class="weui-cell weui-check__label" :for="joinId(item.id)" :class='{disabled:checkDisabled(item.couponAmt,item.couponAmtMin)}'>
 					    <div class="weui-cell__hd">
 					      	<input type="radio" class="weui-check" name="checkbox1" :id="joinId(item.couponNo)" :checked="selectedCouponItemId == item.couponNo">
 					      	<i class="weui-icon-checked"></i> 
@@ -118,9 +118,10 @@
 				return "s"+_id;
 			},
 			changeCoupon:function(_price,_min,_id){//选择优惠券
+				//console.log(_price,_min,this.payPrice*100,_price>=this.payPrice*100,this.payPrice*100<_min)
 				if(this.payPrice == '0'){
 					this.couponPrice = 0;
-				}else if(_price>this.payPrice*100 || this.payPrice*100<_min){
+				}else if(_price>=this.payPrice*100 || this.payPrice*100<=_min){
 				}else{
 					this.couponPrice = _price;
 					this.selectedCouponItemId = _id;
@@ -181,17 +182,20 @@
 		  		if(this.payPrice*100/100>0 && this.payAble){
 		  			this.payAble = false;
 		  			var _this = this;
-		  			var _payPrice = parseInt(this.payPrice*10000/100)
 		  			var _params = {
 		  				qrId: this.qrId,
                         openId:this.openId,
                         payMode:this.payMode,
                         src: this.src,
-                        orderAmt:_payPrice-this.couponPrice,//订单实际金额
-                        orderAmtOrg:_payPrice,//订单原始金额
-                        couponAmt:this.couponPrice,//优惠券金额
-                        couponNo:this.selectedCouponItemId?this.selectedCouponItemId+'':''//优惠券编号
+                        //orderAmt:_payPrice-this.couponPrice,//订单实际金额
+                        orderAmtOrg:this.payPrice-0,//订单原始金额
+                        //couponAmt:this.couponPrice,//优惠券金额
+                        //couponNo:this.selectedCouponItemId?this.selectedCouponItemId+'':''//优惠券编号
 		  			};
+		  			if(this.couponPrice != 0){
+		  				//_params.couponAmt = this.couponPrice;
+		  				_params.couponNo = this.selectedCouponItemId;
+		  			}
 		  			this.$http.jsonp(httpUrl.pay_order, 
 				    	{params: _params}
 				    ).then((response) => {
@@ -267,7 +271,8 @@
 			  			this.payPrice += _s;
 		  			}
 		  		}
-	  			var _index = this.getAbleCouponIndex(this.payPrice*100);
+		  		var _payPrice = this.accMul(this.payPrice,100);
+	  			var _index = this.getAbleCouponIndex(_payPrice);
 		  		if(_index == -1){
 		  			this.couponPrice = 0;
 		  			this.selectedCouponItemId = 0;
@@ -284,7 +289,7 @@
 		  		}
 		  		for(var i=0;i<this.couponsList.length;i++){
 	  				var _item = this.couponsList[i];
-	  				if(_price >= _item.couponAmtMin && _price >= _item.couponAmt){
+	  				if(_price > _item.couponAmtMin && _price > _item.couponAmt){
 	  					if(_item.couponAmt > _maxPrice){
 	  						_maxPrice = _item.couponAmt;
 	  						_index = i;
@@ -401,7 +406,21 @@
 			  	if(r!=null)
 			  		return  unescape(r[2]); 
 			  	return null;
-			}
+			},
+			checkDisabled:function(_price,_min){ // !(payPrice*100>item.couponAmt&&payPrice*100>item.couponAmtMin)
+				var _payPrice = this.accMul(this.payPrice,100);
+				if(_payPrice > _price && _payPrice > _min){
+					return false;
+				}else{
+					return true;
+				}
+			},
+			accMul:function(arg1,arg2){ 
+				var m=0,s1=arg1,s2=arg2.toString(); 
+				try{m+=s1.split(".")[1].length}catch(e){} 
+				try{m+=s2.split(".")[1].length}catch(e){} 
+				return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m) 
+			} 	
 		},
 		computed:{
 			getPayModeText:function(){

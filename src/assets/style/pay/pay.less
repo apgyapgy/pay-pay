@@ -41,28 +41,46 @@
             left: 50%;
             transform: translate(-50%,-50%);
             text-align: center;
-//          border:1px solid #797979;
             font-size:16px;
             background:#fff;
             border-radius:3px;
             .title{
+                position:relative;
                 padding-top:.8em;
                 padding-bottom:.8em;
                 width:100%;
                 font-size:18px;
+                &:before{
+                    content:"";
+                    position:absolute;
+                    bottom: 0;
+                    left:0;
+                    width:100%;
+                    border-bottom: 1px solid #d9d9d9;
+                    -webkit-transform-origin: 0 0;
+                    transform-origin: 0 0;
+                    -webkit-transform: scaleY(.5);
+                    transform: scaleY(.5);
+                }
             }
             .coupons-content{
                 padding-bottom:.5rem;
+                max-height:300px;
+                overflow-y:scroll;
                 &.weui-cells{
                     margin-top:0;
-                    padding-left:1.6em;
-                    padding-right:1.6em;
+                    padding-left:1.5em;
+                    padding-right:1.5em;
+                    &:before{
+                        display:none;
+                    }
                     .weui-cell{
                         &.disabled{
                            color:#999;
                         }
                        .weui-cell__bd{
                             text-align:left;
+                            overflow-x:hidden ;
                         } 
                     }
                 }
