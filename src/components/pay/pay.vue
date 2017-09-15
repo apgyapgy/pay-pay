@@ -17,7 +17,7 @@
 		        <input type="text" id="text1" style="display:none">
 		    </div>
 		    <a id="addRemarks" v-show="remarkText.length==0" @click="addRemark" class="main-tip">添加备注</a>
-		    <span v-show="this.couponPrice" class="pay-coupon" @click="showCoupon">-￥{{couponPrice/100}}(可用优惠券{{couponsList.length}}张)&gt;</span>
+		    <span v-show="showCouponInfoFlag" class="pay-coupon" @click="showCoupon">-￥{{couponPrice/100}}(可用优惠券{{couponsList.length}}张)&gt;</span>
 		    <label v-show="remarkText.length>0" class="remarks">{{remarkText.length>6?remarkText.substring(0,6)+'...':remarkText}}</label>
 		    <a v-show="remarkText.length>0" id="updateRemarks" @click="addRemark" class="main-tip">修改</a>
 		</div>
@@ -102,7 +102,8 @@
         		mchLogo:'./static/images/shop-icon.png',//用户头像
         		mchNm:'富友电子',//用户名称
         		payAble:true,
-        		appidParms:{}
+        		appidParms:{},
+        		showCouponInfoFlag:false
 			}
 		},
 		methods:{
@@ -121,10 +122,18 @@
 				//console.log(_price,_min,this.payPrice*100,_price>=this.payPrice*100,this.payPrice*100<_min)
 				if(this.payPrice == '0'){
 					this.couponPrice = 0;
+					this.showCouponInfoFlag = false;
 				}else if(_price>=this.payPrice*100 || this.payPrice*100<=_min){
+					this.showCouponInfoFlag = true;
 				}else{
-					this.couponPrice = _price;
-					this.selectedCouponItemId = _id;
+					if(this.selectedCouponItemId == _id){
+						this.couponPrice = 0;
+						this.selectedCouponItemId = '';
+					}else{
+						this.couponPrice = _price;
+						this.selectedCouponItemId = _id;
+					}
+					
 				}
 				this.showCouponFlag = false;
 			},
@@ -174,6 +183,7 @@
 		  		this.payPrice = '0';
 		  		this.couponPrice = 0;
 		  		this.selectedCouponItemId = 0;
+				this.showCouponInfoFlag = false;
 		  		if(this.payFlag == true){
 		  			this.payFlag = false;
 		  		}
@@ -276,9 +286,11 @@
 		  		if(_index == -1){
 		  			this.couponPrice = 0;
 		  			this.selectedCouponItemId = 0;
+					this.showCouponInfoFlag = false;
 		  		}else{
 		  			this.couponPrice = this.couponsList[_index].couponAmt;
 		  			this.selectedCouponItemId = this.couponsList[_index].couponNo;
+					this.showCouponInfoFlag = true;
 		  		}
 		  	},
 		  	getAbleCouponIndex:function(_price){//获取可使用的优惠券index
@@ -445,9 +457,11 @@
 				}
 				this.selectedCouponItemId = _selectedId;
 				this.couponPrice = _maxNum;
+				this.showCouponInfoFlag = true;
 			}else{
 				this.selectedCouponItemId = 0;
 				this.couponPrice = 0;
+				this.showCouponInfoFlag = false;
 			}
 			this.initInfo();
 		},
