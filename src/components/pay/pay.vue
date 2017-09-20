@@ -16,35 +16,35 @@
 		        <input type="text" id="per" style="display:none">
 		        <input type="text" id="text1" style="display:none">
 		    </div>
-		    <a id="addRemarks" v-show="remarkText.length==0" @click="addRemark" class="main-tip">添加备注</a>
-		    <span v-show="showCouponInfoFlag" class="pay-coupon" @click="showCoupon">-￥{{couponPrice/100}}(可用优惠券{{couponsList.length}}张)&gt;</span>
-		    <label v-show="remarkText.length>0" class="remarks">{{remarkText.length>6?remarkText.substring(0,6)+'...':remarkText}}</label>
-		    <a v-show="remarkText.length>0" id="updateRemarks" @click="addRemark" class="main-tip">修改</a>
+		    <!--<a id="addRemarks" v-show="remarkText.length==0" @click="addRemark" class="main-tip">添加备注</a>-->
+		    <span v-show="showCouponInfoFlag" class="pay-coupon" @click="showCoupon">-￥{{couponPrice/100}}(可用优惠券{{count}}张)&gt;</span>
+		    <!--<label v-show="remarkText.length>0" class="remarks">{{remarkText.length>6?remarkText.substring(0,6)+'...':remarkText}}</label>-->
+		    <!--<a v-show="remarkText.length>0" id="updateRemarks" @click="addRemark" class="main-tip">修改</a>-->
 		</div>
 		<footer class="main-footer">
 		    <p>由富友收件宝提供技术支持</p>
 		    <!--<p>由富友收件宝<img src="images/fuiou.png" style="height: 20px">提供技术支持</p>-->
 		    <table class="main-table" width="100%" border="0" cellspacing="0" cellpadding="0">
 		        <tr>
-		            <td @click="inputNum('1')" width="25%" class="border-left0 border-bottom0 border-right0"><a class="number" data-values="1">1</a></td>
-		            <td @click="inputNum('2')" width="25%" class="border-bottom0 border-right0"><a class="number" data-values="2">2</a></td>
-		            <td @click="inputNum('3')" width="25%" class="border-bottom0 border-right0"><a class="number" data-values="3">3</a></td>
-		            <td @click="delInput" class="border-right0 border-bottom0 border-right0"><a id="del" class="del">←</a></td>
+		            <td @touchstart="inputNum('1')" width="25%" class="border-left0 border-bottom0 border-right0"><a class="number" data-values="1">1</a></td>
+		            <td @touchstart="inputNum('2')" width="25%" class="border-bottom0 border-right0"><a class="number" data-values="2">2</a></td>
+		            <td @touchstart="inputNum('3')" width="25%" class="border-bottom0 border-right0"><a class="number" data-values="3">3</a></td>
+		            <td @touchstart="delInput" class="border-right0 border-bottom0 border-right0"><a id="del" class="del">←</a></td>
 		        </tr>
 		        <tr>
-		            <td @click="inputNum('4')" class="border-left0 border-bottom0 border-right0"><a class="number" data-values="4">4</a></td>
-		            <td @click="inputNum('5')" class="border-bottom0 border-right0"><a class="number" data-values="5">5</a></td>
-		            <td @click="inputNum('6')" class="border-bottom0 border-right0"><a class="number" data-values="6">6</a></td>
-		            <td @click="goToPay" class="border-right0" rowspan="3" id="pay" :class="{pay:payFlag}"><a class="payName" :class="{white:payFlag}" v-html="getPayModeText"></a></td>
+		            <td @touchstart="inputNum('4')" class="border-left0 border-bottom0 border-right0"><a class="number" data-values="4">4</a></td>
+		            <td @touchstart="inputNum('5')" class="border-bottom0 border-right0"><a class="number" data-values="5">5</a></td>
+		            <td @touchstart="inputNum('6')" class="border-bottom0 border-right0"><a class="number" data-values="6">6</a></td>
+		            <td @touchstart="goToPay" class="border-right0" rowspan="3" id="pay" :class="{pay:payFlag}"><a class="payName" :class="{white:payFlag}" v-html="getPayModeText"></a></td>
 		        </tr>
 		        <tr>
-		            <td @click="inputNum('7')" class="border-left0 border-bottom0 border-right0"><a class="number" data-values="7">7</a></td>
-		            <td @click="inputNum('8')" class="border-bottom0 border-right0"><a class="number" data-values="8">8</a></td>
-		            <td @click="inputNum('9')" class="border-bottom0 border-right0"><a class="number" data-values="9">9</a></td>
+		            <td @touchstart="inputNum('7')" class="border-left0 border-bottom0 border-right0"><a class="number" data-values="7">7</a></td>
+		            <td @touchstart="inputNum('8')" class="border-bottom0 border-right0"><a class="number" data-values="8">8</a></td>
+		            <td @touchstart="inputNum('9')" class="border-bottom0 border-right0"><a class="number" data-values="9">9</a></td>
 		        </tr>
 		        <tr>
-		            <td @click="inputNum('0')" class="border-left0 border-right0" colspan="2"><a class="number" data-values="0">0</a></td>
-		            <td @click="addDot" class="border-right0"><a class="number" data-values=".">.</a></td>
+		            <td @touchstart="inputNum('0')" class="border-left0 border-right0" colspan="2"><a class="number" data-values="0">0</a></td>
+		            <td @touchstart="addDot" class="border-right0"><a class="number" data-values=".">.</a></td>
 		        </tr>
 		    </table>
 		</footer>
@@ -52,7 +52,7 @@
 			<div class="coupons">
 				<div class="title">可用优惠券</div>
 				<div class="weui-cells weui-cells_checkbox coupons-content clear">
-				  	<label v-for="(item,index,key) in couponsList" @click.self="changeCoupon(item.couponAmt,item.couponAmtMin,item.couponNo)" class="weui-cell weui-check__label" :for="joinId(item.id)" :class='{disabled:checkDisabled(item.couponAmt,item.couponAmtMin)}'>
+				  	<label v-for="(item,index,key) in couponsList" @click.self="changeCoupon(item.couponAmt,item.couponAmtMin,item.couponNo)" class="weui-cell weui-check__label" :for="joinId(item.id)" :class='{hide:checkDisabled(item.couponAmtMin)}'>
 					    <div class="weui-cell__hd">
 					      	<input type="radio" class="weui-check" name="checkbox1" :id="joinId(item.couponNo)" :checked="selectedCouponItemId == item.couponNo">
 					      	<i class="weui-icon-checked"></i> 
@@ -67,14 +67,12 @@
 	</div>
 </template>
 <script>
-  $(function() {
+$(function() {
     FastClick.attach(document.body);
-  });
+});
 </script>
 <script>
 	//https://static.fuiou.com  静态资源头
-	var imgServer = 'https://static.fuiou.com/';
-	//import {httpUrl} from '../../../config/http_url';
 	import {httpUrl} from '../../assets/js/http_url';
 	export default{
 		data(){
@@ -103,7 +101,9 @@
         		mchNm:'富友电子',//用户名称
         		payAble:true,
         		appidParms:{},
-        		showCouponInfoFlag:false
+        		showCouponInfoFlag:false,
+        		payOrderNo:'',
+        		count:0
 			}
 		},
 		methods:{
@@ -120,10 +120,11 @@
 			},
 			changeCoupon:function(_price,_min,_id){//选择优惠券
 				//console.log(_price,_min,this.payPrice*100,_price>=this.payPrice*100,this.payPrice*100<_min)
+				var _payPrice = this.accMul(this.payPrice,100);
 				if(this.payPrice == '0'){
 					this.couponPrice = 0;
 					this.showCouponInfoFlag = false;
-				}else if(_price>=this.payPrice*100 || this.payPrice*100<=_min){
+				}else if(_payPrice<_min){ //_price>_payPrice || 
 					this.showCouponInfoFlag = true;
 				}else{
 					if(this.selectedCouponItemId == _id){
@@ -192,6 +193,7 @@
 		  		if(this.payPrice*100/100>0 && this.payAble){
 		  			this.payAble = false;
 		  			var _this = this;
+		  			
 		  			var _params = {
 		  				qrId: this.qrId,
                         openId:this.openId,
@@ -208,7 +210,7 @@
 		  			}
 		  			this.$http.jsonp(httpUrl.pay_order, 
 				    	{params: _params}
-				    ).then((response) => {
+				    ).then(function(response){
 				        // 响应成功回调
 				        _this.payAble = true;
 				        var _body = response.body;
@@ -218,29 +220,43 @@
 	                        //window.location.href = 'qrCode.html?qrId='+this.qrId;
 	                    }else{
 	                    	var _data = _body.data;
-	                    	if(_this.payMode == 0){//微信支付
-	                    		_this.appidParams = {
-		                    		appId:_data.appid,//公众号id
-		                    		timeStamp:_data.timestamp,//时间戳
-		                    		nonceStr:_data.noncestr,//随机字符串
-		                    		package:_data.package,//订单详情扩展字符串
-		                    		signType:_data.signType,//签名方式
-		                    		paySign:_data.paySign//签名
+	                    	//$.alert(JSON.stringify(_data));
+	                    	if(_data.tradeAmt > 0){
+	                    		if(_this.payMode == 0){//微信支付
+		                    		_this.appidParams = {
+			                    		appId:_data.appid,//公众号id
+			                    		timeStamp:_data.timestamp,//时间戳
+			                    		nonceStr:_data.noncestr,//随机字符串
+			                    		package:_data.package,//订单详情扩展字符串
+			                    		signType:_data.signType,//签名方式
+			                    		paySign:_data.paySign//签名
+			                    	}
+		                    		_this.payOrderNo = _data.outOrderNo;
+		                    		//$.alert("wxpayParam:"+JSON.stringify(_this.appidParams));
+			                    	if(_this.appidParams && _this.payAble){
+			                    		_this.weixinPay();
+			                    	}else{
+			                    		 $.alert('微信支付发起参数错误');
+			                    	}
 		                    	}
-	                    		//$.alert("wxpayParam:"+JSON.stringify(_this.appidParams));
-		                    	if(_this.appidParams && _this.payAble){
-		                    		_this.weixinPay();
-		                    	}else{
-		                    		 $.alert('微信支付发起参数错误');
+		                    	if(_this.payMode == 6){//支付宝支付
+		                    		//$.alert("order返回："+JSON.stringify(_data))
+		                    		//var apyOrderNo = _data.outOrderNo;
+		                    		var apyOrderNo = _data.payOrderNo;
+		                    		_this.tradePay(apyOrderNo);
 		                    	}
-	                    	}
-	                    	if(_this.payMode == 6){//支付宝支付
-	                    		var apyOrderNo = _data.payOrderNo;
-	                    		_this.tradePay(payOrderNo);
+	                    	}else{
+	                    		$.alert("支付成功",function(){
+	                    			if(_this.payMode == 0){
+	                    				WeixinJSBridge.call('closeWindow');
+	                    			}else if(_this.payMode == 6){
+	                        			_this.initDataAfterPay();
+	                    			}
+	                    		});
 	                    	}
 	                    }
 				        //this.gridData = response.data;
-				    }, (response) => {
+				    }, function(response){
 				        // 响应错误回调
 				        console.log('失败:',response);
 				    });
@@ -292,6 +308,13 @@
 		  			this.selectedCouponItemId = this.couponsList[_index].couponNo;
 					this.showCouponInfoFlag = true;
 		  		}
+		  		var _count = 0;
+		  		for(var i = 0;i<this.couponsList.length;i++){
+					if( _payPrice >= this.couponsList[i].couponAmtMin){
+						_count++;
+					}
+		  		}
+		  		this.count = _count;
 		  	},
 		  	getAbleCouponIndex:function(_price){//获取可使用的优惠券index
 		  		var _index = -1;
@@ -301,7 +324,7 @@
 		  		}
 		  		for(var i=0;i<this.couponsList.length;i++){
 	  				var _item = this.couponsList[i];
-	  				if(_price > _item.couponAmtMin && _price > _item.couponAmt){
+	  				if(_price >= _item.couponAmtMin){// && _price >= _item.couponAmt
 	  					if(_item.couponAmt > _maxPrice){
 	  						_maxPrice = _item.couponAmt;
 	  						_index = i;
@@ -325,7 +348,7 @@
 			    console.log("params:",_params);//params: Object.assign(_params, httpUrl.com_params)
 			    this.$http.jsonp(httpUrl.user_bind, 
 			    	{params: _params}
-			    ).then((response) => {
+			    ).then(function(response){
 			        // 响应成功回调
 			        console.log('成功:',response);
 			        var _body = response.body;
@@ -338,16 +361,17 @@
                         	var _coupons = _data.coupons;
                         	if(_coupons.length){
                         		_this.couponsList = _coupons;
-                        		console.log(_this.couponsList);
+                        		//console.log(_this.couponsList);
                         	}
                             if(_mch.qrLogo){
+                            	let imgServer = 'https://static.fuiou.com/';
                             	_this.mchLogo = imgServer+_mch.qrLogo;
                             }
                             _this.mchNm = _mch.mchNm;
                         }
                     }
 			        //this.gridData = response.data;
-			    }, (response) => {
+			    }, function(response){
 			        // 响应错误回调
 			        console.log('失败:',response);
 			    });
@@ -358,15 +382,17 @@
 	                WeixinJSBridge.invoke('getBrandWCPayRequest', _this.appidParams,function(res){
 	                    //initBox();
 	                    //alert('微信支付接口返回:'+JSON.stringify(res))
-	                    //$.alert('微信支付接口返回:'+JSON.stringify(res));
+	                    //$.alert('微信支付接口返回:'+JSON.stringify(res));return;
 	                    if(res.err_msg == "get_brand_wcpay_request:ok" ) {
 	                        //window.location.href = 'paySucess.html';
 	                        _this.payPrice = '0';
 	                        WeixinJSBridge.call('closeWindow');
 	                    }else if(res.err_msg == "get_brand_wcpay_request:cancel" ) {
-	                        WeixinJSBridge.call('closeWindow');
+	                    	_this.cancelPay();
+	                        //WeixinJSBridge.call('closeWindow');
 	                    } else {
-	                        WeixinJSBridge.call('closeWindow');
+	                    	_this.cancelPay();
+	                       // WeixinJSBridge.call('closeWindow');
 	                    }
 	                });
 	            };
@@ -383,6 +409,7 @@
 	            }
 	        },
 	        tradePay:function(tradeNO) {
+	        	var _this = this;
 	            this.ready(function(){
 	                // 通过传入交易号唤起快捷调用方式(注意tradeNO大小写严格)
 	                AlipayJSBridge.call("tradePay", {
@@ -395,11 +422,24 @@
 	//                    6001用户中途取消
 	//                    6002 网络连接出错
 	//                    99 用户点击忘记密码界面
+						//$.alert("支付宝支付返回："+JSON.stringify(data));
 	                    if (data.resultCode == "9000") {
 	                        console.log("支付成功");
+	                        _this.initDataAfterPay();
+	                    }else{
+	                    	_this.cancelPay();
 	                    }
 	                });
 	            });
+	        },
+	        initDataAfterPay:function(){//支付后刷新数据 关于支付宝
+	        	this.payPrice = '0';
+				this.couponPrice = 0;
+				this.payOrderNo = '';
+				this.appidParms={};
+				this.selectedCouponItemId=0;
+				this.payFlag = false;
+				this.initInfo();
 	        },
 	        ready:function(callback) {
 	            //$.attr('测试'+window.AlipayJSBridge);
@@ -419,9 +459,9 @@
 			  		return  unescape(r[2]); 
 			  	return null;
 			},
-			checkDisabled:function(_price,_min){ // !(payPrice*100>item.couponAmt&&payPrice*100>item.couponAmtMin)
+			checkDisabled:function(_min){ // !(payPrice*100>item.couponAmt&&payPrice*100>item.couponAmtMin)
 				var _payPrice = this.accMul(this.payPrice,100);
-				if(_payPrice > _price && _payPrice > _min){
+				if( _payPrice >= _min){//_payPrice >= _price &&
 					return false;
 				}else{
 					return true;
@@ -432,7 +472,34 @@
 				try{m+=s1.split(".")[1].length}catch(e){} 
 				try{m+=s2.split(".")[1].length}catch(e){} 
 				return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m) 
-			} 	
+			},
+			cancelPay:function(){
+				var _this = this;
+				//$.alert(this.couponPrice+":"+this.selectedCouponItemId+":"+httpUrl.cancel_pay+this.payOrderNo);return;
+				if(this.couponPrice != 0){ //已选择优惠券
+	  				this.$http.jsonp(httpUrl.cancel_pay+_this.payOrderNo
+	  				).then(function(response){
+	  					//$.alert("url:"+httpUrl.cancel_pay+_this.payOrderNo+":success"+JSON.stringify(response.body));
+	  					if(_this.payMode == 0){
+	  						WeixinJSBridge.call('closeWindow');
+	  					}
+	  					if(_this.payMode == 6){
+	                        _this.initDataAfterPay();
+	  					}
+	  				},function(response){
+	  					$.alert("error:"+JSON.stringify(response.body));
+	  					if(_this.payMode == 0){
+	  						WeixinJSBridge.call('closeWindow');
+	  					}
+	  					if(_this.payMode == 6){
+	                        _this.initDataAfterPay();
+	  					}
+	  				});
+	  			}else{
+	  				return;
+	  			}
+			},
+			
 		},
 		computed:{
 			getPayModeText:function(){
@@ -484,5 +551,94 @@
 </script>
 
 <style lang="less" scoped>
-	@import "../../assets/style/pay/pay.less";
+.pay{
+    .main-panel{
+        #addRemarks{
+            float:left;
+            display:block;
+            width:40%;
+        }
+        .pay-coupon{
+            float:right;
+            width:60%;
+            font-size:14px;
+            text-align:right;
+            color:#f00;
+        }
+        .remarks{
+            float:left;
+        }
+        #updateRemarks{
+            display:block;
+            float:left;
+        }
+    }
+    #coupon-wrapper{
+        display:none;
+        position:fixed;
+        left:0;
+        top:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,.2);
+        transition:all .3s;
+        z-index:1000;
+        &.active{
+            display:block;
+        }
+        .coupons{ 
+            position: absolute;
+            width: 80%;
+            max-width: 300px;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            text-align: center;
+            font-size:16px;
+            background:#fff;
+            border-radius:3px;
+            .title{
+                position:relative;
+                padding-top:.8em;
+                padding-bottom:.8em;
+                width:100%;
+                font-size:18px;
+                &:before{
+                    content:"";
+                    position:absolute;
+                    bottom: 0;
+                    left:0;
+                    width:100%;
+                    border-bottom: 1px solid #d9d9d9;
+                    -webkit-transform-origin: 0 0;
+                    transform-origin: 0 0;
+                    -webkit-transform: scaleY(.5);
+                    transform: scaleY(.5);
+                }
+            }
+            .coupons-content{
+                padding-bottom:.5rem;
+                max-height:300px;
+                overflow-y:scroll;
+                &.weui-cells{
+                    margin-top:0;
+                    padding-left:1.5em;
+                    padding-right:1.5em;
+                    &:before{
+                        display:none;
+                    }
+                    .weui-cell{
+                        &.disabled{
+                           color:#999;
+                        }
+                       .weui-cell__bd{
+                            text-align:left;
+                            overflow-x:hidden ;
+                        } 
+                    }
+                }
+            }
+        }
+    }
+}
 </style>

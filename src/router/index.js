@@ -12,7 +12,7 @@ export default new Router({
       	path: '/',
       	name: 'Pay',
       	meta: {
-        	title: '自助收银'
+        	title: '支付'
       	},
       	component: Pay,
     },{

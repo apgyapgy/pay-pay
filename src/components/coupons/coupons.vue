@@ -3,7 +3,7 @@
 		<div v-for="item in couponsList" class="weui-panel weui-panel_access">
 			<div class="weui-panel__bd border-bottom">
 			    <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-			      	<div class="weui-media-box__hd">
+			      	<div v-show="checkLogoShowAble(item.mchLogo)" class="weui-media-box__hd">
 			        	<img class="weui-media-box__thumb" src="./shop-icon.png" :src="item.mchLogo">
 			      	</div>
 			      	<div class="weui-media-box__bd">
@@ -17,7 +17,7 @@
 				<div v-for="list in item.datas" class="weui-media-box weui-media-box_text border-bottom" :class="{unavailable:getCouponUseStateFlag(list.couponStDesc)}">
 		            <h4 class="weui-media-box__title">{{list.couponNm}}<span class="coupon-state">{{getCouponUseStateText(list.couponStDesc)}}</span></h4>
 		            <p class="weui-media-box__desc">使用条件：{{getCouponUseCondition(list.couponAmt,list.couponAmtMin)}}</p>
-		            <p class="weui-media-box__desc">优惠券有效期：{{formatCouponDate(list.couponDt)}}-{{formatCouponDate(list.expireDt)}}</p>
+		            <p class="weui-media-box__desc">优惠券有效期：{{formatCouponDate(list.startDt)}}-{{formatCouponDate(list.expireDt)}}</p>
 		        </div>
 			</div>
 		</div>
@@ -52,7 +52,7 @@
 				var _this = this;
 				this.$http.jsonp(httpUrl.get_coupons,
 			    	{params: _params}
-			    ).then((response) => {
+			    ).then(function(response){
 			        // 响应成功回调
 			        console.log('成功:',response);
 			        var _body = response.body;
@@ -63,10 +63,9 @@
                     	if(_data.datas.length){
                     		_data = _data.datas;
                     	}
-                    	console.log("haha:",_data);
                     	_this.sortCoupons(_data);
                     }
-			    }, (response) => {
+			    }, function(response){
 			        // 响应错误回调
 			        console.log('失败:',response);
 			    });
@@ -75,21 +74,24 @@
 				var _coupons = [];
 				for(var i = 0;i < _data.length;i++){
 					var _mchId = ''+_data[i].mchId;
-					if(_coupons.length){
+					if(_coupons.length){//如果数组不为空
+						var _flag = false;
 						for(var key in _coupons){
 							if(_coupons[key]["mchId"] == _mchId){
+								_flag = true;
 								_coupons[key]["datas"].push(_data[i]);
 								break;
-							}else{
-								_coupons.push(this.pushData(_data[i]));
 							}
+						}
+						if(!_flag){
+							_coupons.push(this.pushData(_data[i]));
 						}
 					}else{
 						_coupons.push(this.pushData(_data[i]));
 					}
 				}
 				this.couponsList = _coupons;
-				//console.log((this.couponsList));
+				console.log("sorted:",_coupons);
 			},
 			pushData:function(_data){
 				var _item = {
@@ -130,11 +132,18 @@
 			},
 			joinImgUrl:function(_url){
 				return imgServer + _url;
+			},
+			checkLogoShowAble:function(_logo){
+				if(_logo == 'https://static.fuiou.com/'){
+					return false;
+				}else{
+					return true;
+				}
 			}
 		},
 		created:function(){
-			if(this.$route.query._PO2OPAYOPENID_){
-				this.openId = this.$route.query._PO2OPAYOPENID_;
+			if(this.$route.query._PO2OOPENID_){ 
+				this.openId = this.$route.query._PO2OOPENID_;
 			}
 			if(this.$route.query.src){
 				this.src = this.$route.query.src;
@@ -148,5 +157,41 @@
 </script>
 
 <style lang="less" scoped>
-	@import "../../assets/style/coupons/coupons.less";
+.border-bottom{
+    border-bottom:1px solid #797979;   
+}
+.weui-media-box_appmsg{
+    .weui-media-box__thumb{
+        height:100%;
+        border-radius:50%;
+    }
+} 
+.coupons-list{
+    .weui-media-box{
+        padding-top:5px;
+        padding-bottom:5px;
+        &.border-bottom{
+            border-bottom:1px solid #797979;
+            &:last-of-type{
+                border-bottom:0;
+            }
+        }
+        &.unavailable{
+            color:#999;
+        }
+        .weui-media-box__title{
+            position:relative;
+            .coupon-state{
+                position:absolute;
+                right:0;
+                bottom:0;
+                font-size:14px;
+            }
+        }
+        .weui-media-box__desc{
+            padding-top:2px;
+            padding-bottom:2px;
+        }
+    }
+}
 </style>

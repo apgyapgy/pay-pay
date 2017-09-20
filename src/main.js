@@ -21,10 +21,10 @@ Vue.use(VueWechat);
 
 Vue.http.options.emulateJSON = true;
 // Vue.http.headers.contentType ='application/x-www-form-urlencoded;charset=utf-8';
-Vue.http.interceptors.push((request, next) => {
+Vue.http.interceptors.push(function(request, next){
   $.showLoading();
   request.jsonp = 'callback';
-  next((response) => {
+  next(function(response){
     setTimeout(function() {
       $.hideLoading();
     }, 500)
@@ -33,6 +33,7 @@ Vue.http.interceptors.push((request, next) => {
 });
 
 /* eslint-disable no-new */
+base :'/o2oh5/mch/';
 new Vue({
   el: '#app',
   router,
