@@ -3,13 +3,13 @@
 		<div v-for="item in couponsList" class="weui-panel weui-panel_access">
 			<div class="weui-panel__bd border-bottom">
 			    <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-			      	<div v-show="checkLogoShowAble(item.mchLogo)" class="weui-media-box__hd">
+			      	<div class="weui-media-box__hd">
 			        	<img class="weui-media-box__thumb" src="./shop-icon.png" :src="item.mchLogo">
 			      	</div>
 			      	<div class="weui-media-box__bd">
 			        	<h4 class="weui-media-box__title">{{item.mchNm}}</h4>
 			        	<p class="weui-media-box__desc">地址：{{item.mchAddr}}</p>
-			        	<p class="weui-media-box__desc">联系电话：{{item.mchMobile}}</p>
+			        	<p class="weui-media-box__desc">联系电话：<a :href="'tel:'+item.mchMobile">{{item.mchMobile}}</a></p>
 			      	</div>
 			    </a>
 			</div>
@@ -99,9 +99,13 @@
 					mchMobile:_data.mchMobile,
 					mchId:_data.mchId,
 					mchAddr:_data.mchAddr,
-					mchLogo:imgServer+_data.mchLogo,
 					datas:[]
 				};
+				if(_data.mchLogo == ''){
+					_item.mchLogo = './static/images/shop-icon.png';
+				}else{
+					_item.mchLogo = imgServer+_data.mchLogo;
+				}
 				_item.datas.push(_data);
 				return _item;
 			},
@@ -164,6 +168,11 @@
     .weui-media-box__thumb{
         height:100%;
         border-radius:50%;
+    }
+    .weui-media-box__bd{
+    	a{
+    		text-decoration: underline;
+    	}
     }
 } 
 .coupons-list{

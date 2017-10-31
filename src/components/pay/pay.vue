@@ -250,7 +250,7 @@ $(function() {
 	                    			if(_this.payMode == 0){
 	                    				WeixinJSBridge.call('closeWindow');
 	                    			}else if(_this.payMode == 6){
-	                        			_this.initDataAfterPay();
+	                        			AlipayJSBridge.call('popWindow');
 	                    			}
 	                    		});
 	                    	}
@@ -425,21 +425,12 @@ $(function() {
 						//$.alert("支付宝支付返回："+JSON.stringify(data));
 	                    if (data.resultCode == "9000") {
 	                        console.log("支付成功");
-	                        _this.initDataAfterPay();
+	                        AlipayJSBridge.call('popWindow');
 	                    }else{
 	                    	_this.cancelPay();
 	                    }
 	                });
 	            });
-	        },
-	        initDataAfterPay:function(){//支付后刷新数据 关于支付宝
-	        	this.payPrice = '0';
-				this.couponPrice = 0;
-				this.payOrderNo = '';
-				this.appidParms={};
-				this.selectedCouponItemId=0;
-				this.payFlag = false;
-				this.initInfo();
 	        },
 	        ready:function(callback) {
 	            //$.attr('测试'+window.AlipayJSBridge);
@@ -473,7 +464,7 @@ $(function() {
 				try{m+=s2.split(".")[1].length}catch(e){} 
 				return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m) 
 			},
-			cancelPay:function(){
+			cancelPay:function(){//取消支付，释放优惠券
 				var _this = this;
 				//$.alert(this.couponPrice+":"+this.selectedCouponItemId+":"+httpUrl.cancel_pay+this.payOrderNo);return;
 				if(this.couponPrice != 0){ //已选择优惠券
@@ -484,7 +475,7 @@ $(function() {
 	  						WeixinJSBridge.call('closeWindow');
 	  					}
 	  					if(_this.payMode == 6){
-	                        _this.initDataAfterPay();
+	                        AlipayJSBridge.call('popWindow');
 	  					}
 	  				},function(response){
 	  					$.alert("error:"+JSON.stringify(response.body));
@@ -492,11 +483,16 @@ $(function() {
 	  						WeixinJSBridge.call('closeWindow');
 	  					}
 	  					if(_this.payMode == 6){
-	                        _this.initDataAfterPay();
+	                        AlipayJSBridge.call('popWindow');
 	  					}
 	  				});
 	  			}else{
-	  				return;
+	  				if(_this.payMode == 0){
+	  					WeixinJSBridge.call('closeWindow');
+	  				}
+	  				if(_this.payMode == 6){
+	  					AlipayJSBridge.call('popWindow');
+	  				}
 	  			}
 			},
 			
