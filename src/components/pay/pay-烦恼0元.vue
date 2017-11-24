@@ -2,7 +2,7 @@
 	<div class="pay">
 		<header class='main-header'>
 		    <h1 class="main-title">
-		        <!--<img id="mchLogo" class="mchLogo" src="./shopicon.png">-->
+		        <!--<img id="mchLogo" class="mchLogo" src="./shop-icon.png">-->
 		        <img id="mchLogo" class="mchLogo" :src="mchLogo">
 		    </h1>
 		    <p class='main-sub-title' id="mchNm">{{mchNm}}</p>
@@ -12,8 +12,9 @@
 		        <label>金额：</label>
 		        <!--<div style="float: right; text-align: right">¥-->
 		        <!--</div>-->
-		        <div id="input-money" class="weui-input main-input">￥{{payPrice}}</div>
-		        <!--<input type="text" id="per" style="display:none"><input type="text" id="text1" style="display:none">-->
+		        <input id="input-money" @fuous="preventKeyBoard" class="weui-input main-input" :value="payPrice" type="text"  maxlength="9" readonly autofocus/>
+		        <input type="text" id="per" style="display:none">
+		        <input type="text" id="text1" style="display:none">
 		    </div>
 		    <!--<a id="addRemarks" v-show="remarkText.length==0" @click="addRemark" class="main-tip">添加备注</a>-->
 		    <span v-show="showCouponInfoFlag" class="pay-coupon" @click="showCoupon">-￥{{couponPrice/100}}(可用优惠券{{count}}张)&gt;</span>
@@ -39,10 +40,8 @@
 		            <td @touchstart="inputNum('4')" class="border-left0 border-bottom0 border-right0"><a class="number" data-values="4">4</a></td>
 		            <td @touchstart="inputNum('5')" class="border-bottom0 border-right0"><a class="number" data-values="5">5</a></td>
 		            <td @touchstart="inputNum('6')" class="border-bottom0 border-right0"><a class="number" data-values="6">6</a></td>
-		            <td @touchstart="goToPay" class="border-right0" rowspan="3" id="pay" :class="[{pay:payFlag},{wxpay:payMode==0},{alipay:payMode==6}]">
-		            	<img v-if="payMode==0" src="static/images/wxpay.png" alt="" />
-		            	<img v-else src="static/images/alipay.png" alt="" />
-		            	<a class="payName" v-html="getPayModeText"></a>
+		            <td @touchstart="goToPay" class="border-right0" rowspan="3" id="pay" :class="{pay:payFlag}">
+		            	<a class="payName" :class="{white:payFlag}" v-html="getPayModeText"></a>
 		            </td>
 		        </tr>
 		        <tr>
@@ -79,11 +78,9 @@
 					<img src="./coupon-receive-back.png" alt="" />
 				</div>
 				<div class="receive-coupon-info">
-					<div class="receive-coupon-info-left">
-						<span v-if="mchCoupon.couponAmtMin>0" class="receive-coupon-condition">当面付消费满<b>{{mchCoupon.couponAmtMin/100}}</b>元减<b>{{mchCoupon.couponAmt/100}}</b>元</span>
-						<span v-else class="receive-coupon-condition">当面付消费减<b>{{mchCoupon.couponAmt/100}}</b>元</span>
-						<span class="receive-coupon-time">有效期<b>{{formatCouponDate(mchCoupon.startDt)}}</b>-<b>{{formatCouponDate(mchCoupon.expireDt)}}</b></span>
-					</div>
+					<span v-if="mchCoupon.couponAmtMin>0" class="receive-coupon-condition">当面付消费满<b>{{mchCoupon.couponAmtMin/100}}</b>元减<b>{{mchCoupon.couponAmt/100}}</b>元</span>
+					<span v-else class="receive-coupon-condition">当面付消费减<b>{{mchCoupon.couponAmt/100}}</b>元</span>
+					<span class="receive-coupon-time">有效期<b>{{formatCouponDate(mchCoupon.startDt)}}</b>-<b>{{formatCouponDate(mchCoupon.expireDt)}}</b></span>
 				</div>
 				<span @click.stop="receiveCoupon" class="receive-coupon-btn">免费领</span>
 				<span @click.stop="closeReceiveCoupon" class="receive-coupon-close"></span>
@@ -106,9 +103,9 @@ $(function() {
 				showCouponFlag:false,
 				couponsList:[],
 		        minCoupon:{},//最易满足条件的优惠券
-				couponPrice:0,//优惠价，默认为0,
+				couponPrice:-1,//优惠价，默认为0,
 				remarkText:'',//备注信息
-				payPrice:'',
+				payPrice:'0',
 				//payMode:6,//支付方式 ，0微信支付，6支付宝支付
 				payFlag:false,//为ture,按钮显示为绿色背景，为false无背景
 				selectedCouponItemId:0,//选中的优惠券列表id
@@ -116,7 +113,7 @@ $(function() {
 				src:2,
         		openId : '',//'135_73_78_146_82_107_136_102_94_130_92_143_103_96_92_129_139_137_94_130_136_128_130_96_103_134_95_135_124_139_126_141_103_148_101_133_69_127_131_148_138_107_129_87_36',//微信
         		payMode : 6,
-        		mchLogo:'https://staticds.fuiou.com/sys/ds/o2oh5/pay/static/images/shopicon.png',//用户头像
+        		mchLogo:'./static/images/shop-icon.png',//用户头像
         		mchNm:'富友电子',//用户名称
         		payAble:true,
         		appidParms:{},
@@ -142,10 +139,10 @@ $(function() {
 			changeCoupon:function(_price,_min,_id){//选择优惠券
 				//console.log(_price,_min,this.payPrice*100,_price>=this.payPrice*100,this.payPrice*100<_min)
 				var _payPrice = this.accMul(this.payPrice,100);
-				if(this.payPrice == ''){
+				if(this.payPrice == '0'){
 					this.couponPrice = 0;
 					this.showCouponInfoFlag = false;
-				}else if(_payPrice<_min){ //_price>_payPrice || 
+				}else if(_payPrice<=_min){ //_price>_payPrice || 
 					this.showCouponInfoFlag = true;
 				}else{
 					if(this.selectedCouponItemId == _id){
@@ -178,7 +175,7 @@ $(function() {
 				});
 			},
 			inputNum:function(num){//输入数字
-		  		if(this.payPrice.indexOf(".") != -1){//有小数点后输入0
+		  		if(this.payPrice.indexOf(".") != -1){
 		  			var _zeroFlag = false;
 		  			var _dotIndex = this.payPrice.indexOf(".");
 		  			if((_dotIndex < this.payPrice.length-1) && this.payPrice.substring(_dotIndex+1) == '0'){
@@ -201,7 +198,7 @@ $(function() {
 		  		if(!this.payAble){
 		  			return;
 		  		}
-		  		this.payPrice = '';
+		  		this.payPrice = '0';
 		  		this.couponPrice = 0;
 		  		this.selectedCouponItemId = 0;
 				this.showCouponInfoFlag = false;
@@ -210,8 +207,7 @@ $(function() {
 		  		}
 		  	},
 		  	goToPay:function(){//去支付
-		  		//if(this.payPrice*100/100>0 && this.payAble){
-		  		if(this.payPrice!='' && this.payAble){
+		  		if(this.payPrice*100/100>0 && this.payAble){
 		  			this.payAble = false;
 		  			var _this = this;
 		  			
@@ -285,7 +281,7 @@ $(function() {
 		  	},
 		  	addDot:function(){//输入小数点
 		  		if(this.payPrice.indexOf(".") == -1){//无小数点
-		  			if(this.payPrice == ''){
+		  			if(this.payPrice == '0'){
 		  				this.changePayPrice("0.");
 		  			}else{
 		  				this.changePayPrice(".");
@@ -296,13 +292,13 @@ $(function() {
 		  		if(!this.payAble){
 		  			return;
 		  		}
-		  		/*if(_s == '0' && this.payPrice == '0'){//当前值为0，输入也为0，不做处理
+		  		if(_s == '0' && this.payPrice == '0'){//当前值为0，输入也为0，不做处理
 		  		}else if(_s != '0' && this.payPrice == '0'){//当前值为0，输入不为0，直接将输入的赋给当前值
 		  			if(this.payFlag == false){
 		  				this.payFlag = true;
 		  			}
 		  			this.payPrice = _s;
-		  		}else{//当前值不为0，输入不为0，拼接字符串*/
+		  		}else{//当前值不为0，输入不为0，拼接字符串
 		  			if(this.payFlag == false){
 		  				this.payFlag = true;
 		  			}
@@ -317,7 +313,7 @@ $(function() {
 			  			}
 			  			this.payPrice += _s;
 		  			}
-		  		//}
+		  		}
 		  		var _payPrice = this.accMul(this.payPrice,100);
 	  			var _index = this.getAbleCouponIndex(_payPrice);
 		  		if(_index == -1){
@@ -340,7 +336,7 @@ $(function() {
 		  	getAbleCouponIndex:function(_price){//获取可使用的优惠券index
 		  		var _index = -1;
 		  		var _maxPrice = 0;
-		  		if(_price ==''){
+		  		if(_price == 0){
 		  			return -1;
 		  		}
 		  		for(var i=0;i<this.couponsList.length;i++){
@@ -372,13 +368,11 @@ $(function() {
 			    ).then(function(response){
 			        // 响应成功回调
 			        console.log('成功:',response);
-			        //$.alert(JSON.stringify(response.body.data.mch));
 			        var _body = response.body;
 			        if(_body.code != 200){
                         //window.location.href = 'qrCode.html?qrId='+this.qrId;
                     }else{
                     	var _data = _body.data;
-                    	//$.alert(JSON.stringify(_data))
                         if(_data){
                         	var _mch = _data.mch;
                         	var _coupons = _data.coupons;
@@ -387,10 +381,8 @@ $(function() {
                         		_this.getCoupon();
                         	}
                             if(_mch.qrLogo){
-                            	let imgServer = 'https://staticds.fuiou.com/';
+                            	let imgServer = 'https://static.fuiou.com/';
                             	_this.mchLogo = imgServer+_mch.qrLogo;
-                            }else{
-                            	_this.mchLogo = 'https://staticds.fuiou.com/sys/ds/o2oh5/pay/static/images/shopicon.png';
                             }
                             if(_data.mchCoupon && (!_this.mchCoupon.couponNo)){
                         		_this.mchCoupon = _data.mchCoupon;
@@ -414,7 +406,7 @@ $(function() {
 	                    //$.alert('微信支付接口返回:'+JSON.stringify(res));return;
 	                    if(res.err_msg == "get_brand_wcpay_request:ok" ) {
 	                        //window.location.href = 'paySucess.html';
-	                        _this.payPrice = '';
+	                        _this.payPrice = '0';
 	                        WeixinJSBridge.call('closeWindow');
 	                    }else if(res.err_msg == "get_brand_wcpay_request:cancel" ) {
 	                    	_this.cancelPay();
@@ -480,9 +472,6 @@ $(function() {
 			  	return null;
 			},
 			checkDisabled:function(_min){ // !(payPrice*100>item.couponAmt&&payPrice*100>item.couponAmtMin)
-				if(this.payPrice == ''){
-					return true;
-				}
 				var _payPrice = this.accMul(this.payPrice,100);
 				if( _payPrice >= _min){//_payPrice >= _price &&
 					return false;
@@ -540,22 +529,17 @@ $(function() {
 			closeReceiveCoupon:function(){
 				this.showReceiveCouponFlag = false;
 			},
-			getCoupon:function(){//获取满足条件最低且couponAmtMin不为0的优惠券
-				var _min = -1;
-				var _couponAmtMin = -1;
-				for(var i = 0;i < this.couponsList.length;i++){
-					if(_couponAmtMin == -1 && this.couponsList[i].couponAmtMin != 0){
-						_couponAmtMin = this.couponsList[i].couponAmtMin;
-						_min = i;
-					}
-					if(_couponAmtMin > this.couponsList[i].couponAmtMin && this.couponsList[i].couponAmtMin>0){
+			getCoupon:function(){
+				var _min = 0;
+				var _couponAmtMin = this.couponsList[0].couponAmtMin;
+				for(var i = 1;i < this.couponsList.length;i++){
+					if(_couponAmtMin > this.couponsList[i].couponAmtMin){
 						_min = i;
 						_couponAmtMin = this.couponsList[i].couponAmtMin;
 					}
 				}
-				if(_min != -1){
-					this.minCoupon = this.couponsList[_min];
-				}
+				this.minCoupon = this.couponsList[_min];
+				//console.log("getCouponEnded:",_min,_couponAmtMin);
 			},
 			receiveCoupon:function(){//领取优惠券
 				var _this = this;
@@ -569,15 +553,10 @@ $(function() {
 					var _body = res.body;
 					if(_body.code!=200){
 						_this.showReceiveCouponFlag = false;
-						if(_body.desc == '抱歉，优惠券总数量已发放完毕'){
-							$.alert("券已被抢光，下次早点来哟!");
-						}else{
-							$.alert(_body.desc);
-						}
+						$.alert("领取优惠券失败");
 					}else{
-			        	_this.showReceiveCouponFlag = false; //是否显示领取优惠券弹窗 
+						_this.showCouponFlag = false;
 						$.alert("领取成功，快去使用吧!",function(){
-							_this.showCouponFlag = false;
 							_this.couponsList = [];
 					        _this.minCoupon = {};//最易满足条件的优惠券
 							_this.couponPrice = 0;//优惠价，默认为0,
@@ -585,6 +564,7 @@ $(function() {
 							_this.selectedCouponItemId = 0;//选中的优惠券列表id
 			        		_this.showCouponInfoFlag = false;//显示优惠券列表 
 			        		_this.count = 0;
+			        		_this.showReceiveCouponFlag = false; //是否显示领取优惠券弹窗 
 			        		_this.initInfo();
 						});
 					}
@@ -601,9 +581,11 @@ $(function() {
 		computed:{
 			getPayModeText:function(){
 				if(this.payMode == 6){
-					return '支付宝支付';
+					return '支付宝<br/>支付';
 				}else if(this.payMode == 0){
-					return '微信支付'
+					return '微信<br/>支付'
+				}else{
+					return '支付';
 				}
 			},
 			getDifference:function(){
@@ -639,7 +621,6 @@ $(function() {
 				this.showCouponInfoFlag = false;
 			}
 			this.initInfo();
-			//this.getCoupon();
 		},
 		created:function(){
 			if(this.$route.query.payMode){
@@ -699,41 +680,36 @@ $(function() {
 				}
 			}
 			.receive-coupon-info{
-				position:relative;
 				margin:7.25rem auto 0;
+				padding-top:.75rem;
 				width: 12rem;
 				height:3.35rem;
 				background:url(./coupon-receive-info.png) no-repeat center;
 				background-size:12rem 3.35rem;
 				color:#fff;
 				box-sizing: border-box;
-				.receive-coupon-info-left{
-					position:absolute;
-					top:50%;
-					transform:translateY(-50%);
+				.receive-coupon-condition{
+					display:block;
 					width:10rem;
-					max-height:3.35rem;
+					height:1.2rem;
+					line-height:1.2rem;
+					text-align:center;
+					font-size:.7rem;
+					letter-spacing:.5px;
 					overflow:hidden;
-					.receive-coupon-condition{
-						display:block;
-						line-height:1rem;
-						text-align:center;
-						font-size:.7rem;
-						letter-spacing:.5px;
-						word-break:break-all;
-						b{
-							font-size:.8rem;
-						}
+					b{
+						font-size:.8rem;
 					}
-					.receive-coupon-time{
-						display:block;
-						height:.9rem;
-						line-height:.9rem;
-						text-align:center;
-						font-size:.4rem;
-						b{
-							font-weight:normal;
-						}
+				}
+				.receive-coupon-time{
+					display:block;
+					width:10.5rem;
+					height:.9rem;
+					line-height:.9rem;
+					text-align:center;
+					font-size:.4rem;
+					b{
+						font-weight:normal;
 					}
 				}
 			}

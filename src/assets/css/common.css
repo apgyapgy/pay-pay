@@ -214,33 +214,37 @@ input:required,input:invalid {
 }
 .mchLogo{
   border-radius: 100%;
-  width: 80px;
-  height: 80px;
+  width: 2.25rem;
+  height: 2.25rem;
   padding: 5px;
   background: #FFFFFF;
 }
 .main-header {
-  padding: 20px 0;
+  padding: .5rem 0;
 }
 
 .main-panel{
-  margin: 0 20px;
+  margin: 0 .5rem;
 }
 .main-con{
   padding: 0 5px;
-  border: 1px solid #999;
-  height: 60px;
-  line-height: 60px;
+  border: 1px solid #e9e8e9;
+  height: 4rem;
+  line-height: 4rem;
   border-radius: 4px;
   background: #FFFFFF;
   font-size: 22px;
 }
+.main-con label{
+	font-size:1rem;
+}
 .main-input{
   width: 70%;
-  height: 58px;
-  line-height: 58px;
+  height: 4rem;
+  line-height: 4rem;
   float: right;
   text-align: right;
+  font-weight:bold;
 }
 .main-tip{
   font-size: 14px;
@@ -280,10 +284,15 @@ input:required,input:invalid {
   color: #000000;
   font-size: 24px;
 }
+.main-table a.payName{
+	font-size:.75rem;
+	color:#fff;
+	line-height:1.2rem;
+}
 .main-table tr,.main-table td{
-  border: 1px solid #999;
-  height: 60px;
-  line-height: 60px;
+  border: 1px solid #f2f2f2;
+  height: 3.2rem;
+  line-height: 3.2rem;
   background: #FFFFFF;
   font-weight: bold;
 }
@@ -296,9 +305,34 @@ input:required,input:invalid {
 .main-table .border-bottom0{
   border-bottom: 0;
 }
-.main-table td.pay{
+/*.main-table td.pay{
   background: #3cc51f;
   color: #FFFFFF;
+}*/
+.main-table td.pay.wxpay{
+	background:#61bc47;
+}
+.main-table td.pay.alipay{
+	background:#00adef;
+}
+.main-table td.wxpay img,
+.main-table td.alipay img{
+	display:block;
+	margin:0 auto;
+}
+.main-table td.alipay img{
+	width:1.75rem;
+	height:1.5rem; 
+}
+.main-table td.wxpay img{
+	width:2rem;
+	height:1.5rem;
+}
+.main-table td.wxpay{
+	background:rgba(97,188,71,.5);
+}
+.main-table td.alipay{
+	background:rgba(0,173,239,.5);
 }
 .main-table a.white{
   color: #FFFFFF;

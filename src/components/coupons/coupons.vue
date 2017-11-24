@@ -33,7 +33,7 @@
 </script>
 <script>
 	import {httpUrl} from '../../assets/js/http_url';
-	var imgServer = 'https://static.fuiou.com/';
+	var imgServer = 'https://staticds.fuiou.com/';
 	export default{
 		data(){
 			return{
@@ -138,7 +138,7 @@
 				return imgServer + _url;
 			},
 			checkLogoShowAble:function(_logo){
-				if(_logo == 'https://static.fuiou.com/'){
+				if(_logo == 'https://staticds.fuiou.com/'){
 					return false;
 				}else{
 					return true;
