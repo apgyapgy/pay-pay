@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from '@/components/index'
 import Pay from '@/components/pay/pay'
 import Coupons from '@/components/coupons/coupons'
+import Result from '@/components/result/result'
 Vue.use(Router)
 
 export default new Router({
@@ -36,5 +37,12 @@ export default new Router({
     		title:'自助收银'
     	},
     	component:Pay
+    },{
+      path:'/result',
+      name:'Result',
+      meta:{
+        title:''
+      },
+      component:Result
     }]
 })

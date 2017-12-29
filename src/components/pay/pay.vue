@@ -415,7 +415,8 @@ $(function() {
 	                    if(res.err_msg == "get_brand_wcpay_request:ok" ) {
 	                        //window.location.href = 'paySucess.html';
 	                        _this.payPrice = '';
-	                        WeixinJSBridge.call('closeWindow');
+	                        //WeixinJSBridge.call('closeWindow');
+	                        _this.$router.push('/result');
 	                    }else if(res.err_msg == "get_brand_wcpay_request:cancel" ) {
 	                    	_this.cancelPay();
 	                        //WeixinJSBridge.call('closeWindow');
